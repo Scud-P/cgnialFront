@@ -21,7 +21,8 @@ const ProductDetail = ({ product, onBack, onEdit }) => (
           <button className="btn btn-secondary mt-3" onClick={onBack}>
             Retour aux produits
           </button>
-          <button className="btn btn-warning mt-3" onClick={onEdit}>
+          {/* Passing the product ID to handleEditClick by wrapping onEdit in an anonymous function */}
+          <button className="btn btn-warning mt-3" onClick={() => onEdit(product.id)}>
             Modifier
           </button>
         </div>
