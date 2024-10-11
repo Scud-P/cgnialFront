@@ -28,8 +28,8 @@ const Navbar = () => {
               </Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="/about">
-                Ventes aux distributeurs
+              <Link className="nav-link" to="/sales">
+                Ventes
               </Link>
             </li>
             <li className="nav-item">
