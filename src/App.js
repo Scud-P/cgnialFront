@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import ProductsList from './components/ProductsList';
 import SalesMenu from './components/SalesMenu';
+import Footer from './components/Footer';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
             <Route path="/contact" element={<h1>Contact Page</h1>} />
           </Routes>
         </div>
+        <Footer /> {/* Add the Footer here */}
       </div>
     </Router>
   );

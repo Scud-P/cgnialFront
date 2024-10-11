@@ -12,6 +12,14 @@ const DistributorSalesChart = () => {
   const [chartData, setChartData] = useState({});
   const [loading, setLoading] = useState(true);
 
+  // Define your own colors
+  const colors = [
+    '#FF6384', // Color for distributor 1
+    '#36A2EB', // Color for distributor 2
+    '#FFCE56', // Color for distributor 3
+    '#4BC0C0', // Color for distributor 4
+  ];
+
   useEffect(() => {
     // Function to fetch and process data
     const fetchSalesData = async () => {
@@ -27,17 +35,18 @@ const DistributorSalesChart = () => {
     // Function to process the fetched data into Chart.js format
     const processChartData = (data) => {
       const years = [...new Set(data.flatMap(distributor => distributor.salesByYear.map(s => s.year)))];
-      const datasets = data.map(distributor => ({
-        label: distributor.distributor,
-        data: years.map(year => {
+
+      const datasets = years.map((year, yearIndex) => ({
+        label: year.toString(), // Each dataset represents a year
+        data: data.map(distributor => {
           const salesForYear = distributor.salesByYear.find(s => s.year === year);
           return salesForYear ? salesForYear.sales : 0;
         }),
-        backgroundColor: getRandomColor(),
+        backgroundColor: colors[yearIndex % colors.length], // Use colors array, cycling through if more years than colors
       }));
 
       setChartData({
-        labels: years,
+        labels: data.map(distributor => distributor.distributor), // Labels are now the distributors
         datasets: datasets,
       });
 
@@ -46,16 +55,6 @@ const DistributorSalesChart = () => {
 
     fetchSalesData();
   }, []); // Fetch DTO from backend
-
-  // Utility function to generate random colors for each distributor
-  const getRandomColor = () => {
-    const letters = '0123456789ABCDEF';
-    let color = '#';
-    for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-  };
 
   return (
     <div className="container mt-5">

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import DistribColumnChart from './DistribColumnChart';  // Assuming this is the distributor per year chart
+import DistribColumnChart from './DistribColumnChart';
+import DistribQuarterColumnChart from './DistribQuarterColumnChart'
 
 const SalesMenu = () => {
   const [selectedChart, setSelectedChart] = useState('');
@@ -26,7 +27,6 @@ const SalesMenu = () => {
               <button 
                 className="list-group-item list-group-item-action"
                 onClick={() => handleChartSelection('distributorByQuarter')}
-                disabled // Disable until the component is ready
               >
                 Par trimestre
               </button>
@@ -53,8 +53,9 @@ const SalesMenu = () => {
         <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4">
           <div className="chart-container mt-4">
             {selectedChart === 'distributorByYear' && <DistribColumnChart />}
+            {selectedChart === 'distributorByQuarter' && <DistribQuarterColumnChart/>}
+
             {/* Commented out the below charts as they are not implemented yet */}
-            {/* {selectedChart === 'distributorByQuarter' && <DistributorSalesChart period="quarter" />} */}
             {/* {selectedChart === 'retailerByYear' && <RetailerSalesChart />} */}
             {/* {selectedChart === 'retailerByQuarter' && <RetailerSalesChart period="quarter" />} */}
           </div>
