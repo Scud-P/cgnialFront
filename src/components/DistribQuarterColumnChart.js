@@ -11,6 +11,7 @@ const API_URL = 'http://localhost:8080';
 const DistributorSalesChart = () => {
   const [chartData, setChartData] = useState({});
   const [loading, setLoading] = useState(true);
+  const [selectedQuarters, setSelectedQuarters] = useState([true, true, true, true]); // True means selected
 
   // Define your own colors for each quarter
   const colors = [
@@ -39,18 +40,20 @@ const DistributorSalesChart = () => {
 
       // Create a dataset for each quarter
       for (let quarter = 1; quarter <= 4; quarter++) {
-        datasets.push({
-          label: `Q${quarter}`,
-          data: distributors.flatMap(distributor => {
-            const salesForDistributor = data.find(d => d.distributor === distributor);
-            const sales = salesForDistributor.yearlySales.map(yearlySales => {
-              const quarterlySale = yearlySales.quarterlySales.find(q => q.quarter === quarter);
-              return quarterlySale ? quarterlySale.sales : 0;
-            });
-            return sales; // Return an array of sales for each year
-          }),
-          backgroundColor: colors[quarter - 1],
-        });
+        if (selectedQuarters[quarter - 1]) { // Only add data for selected quarters
+          datasets.push({
+            label: `Q${quarter}`,
+            data: distributors.flatMap(distributor => {
+              const salesForDistributor = data.find(d => d.distributor === distributor);
+              const sales = salesForDistributor.yearlySales.map(yearlySales => {
+                const quarterlySale = yearlySales.quarterlySales.find(q => q.quarter === quarter);
+                return quarterlySale ? quarterlySale.sales : 0;
+              });
+              return sales; // Return an array of sales for each year
+            }),
+            backgroundColor: colors[quarter - 1],
+          });
+        }
       }
 
       // Update chartData
@@ -63,11 +66,36 @@ const DistributorSalesChart = () => {
     };
 
     fetchSalesData();
-  }, []);
+  }, [selectedQuarters]); // Dependency array includes selectedQuarters
+
+  // Handle checkbox change
+  const handleQuarterChange = (index) => {
+    const newSelectedQuarters = [...selectedQuarters];
+    newSelectedQuarters[index] = !newSelectedQuarters[index];
+    setSelectedQuarters(newSelectedQuarters);
+  };
 
   return (
     <div className="container mt-5">
-      <h2 className="text-center mb-4">Ventes par distributeur par année</h2>
+      <h2 className="text-center mb-4">Ventes trimestrielles</h2>
+    <div className="mb-4 d-flex align-items-center">
+        <h5 className="me-3">Trimestres</h5>
+        {selectedQuarters.map((isSelected, index) => (
+    <div key={index} className="form-check me-3">
+      <input
+        type="checkbox"
+        className="form-check-input"
+        id={`quarter${index + 1}`}
+        checked={isSelected}
+        onChange={() => handleQuarterChange(index)}
+      />
+      <label className="form-check-label" htmlFor={`quarter${index + 1}`}>
+        Q{index + 1}
+      </label>
+    </div>
+  ))}
+</div>
+
       {loading ? (
         <p>Loading...</p>
       ) : (
