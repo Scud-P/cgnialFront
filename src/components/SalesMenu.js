@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import DistribColumnChart from './DistribColumnChart';
 import DistribQuarterColumnChart from './DistribQuarterColumnChart'
+import DistribCasesColumnChart from './DistribCasesColumnChart';
 
 const SalesMenu = () => {
   const [selectedChart, setSelectedChart] = useState('');
@@ -22,13 +23,19 @@ const SalesMenu = () => {
                 className="list-group-item list-group-item-action"
                 onClick={() => handleChartSelection('distributorByYear')}
               >
-                Par année
+                Par année ($)
               </button>
               <button 
                 className="list-group-item list-group-item-action"
                 onClick={() => handleChartSelection('distributorByQuarter')}
               >
-                Par trimestre
+                Par trimestre ($)
+              </button>
+              <button 
+                className="list-group-item list-group-item-action"
+                onClick={() => handleChartSelection('casesByYear')}
+              >
+                Par année (caisses)
               </button>
               <h5 className="list-group-item mt-3">Détaillants</h5>
               <button 
@@ -54,6 +61,7 @@ const SalesMenu = () => {
           <div className="chart-container mt-4">
             {selectedChart === 'distributorByYear' && <DistribColumnChart />}
             {selectedChart === 'distributorByQuarter' && <DistribQuarterColumnChart/>}
+            {selectedChart === 'casesByYear' && <DistribCasesColumnChart />}
 
             {/* Commented out the below charts as they are not implemented yet */}
             {/* {selectedChart === 'retailerByYear' && <RetailerSalesChart />} */}
